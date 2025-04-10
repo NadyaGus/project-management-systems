@@ -1,14 +1,13 @@
-import { Button, createTheme, ThemeProvider, Typography } from '@mui/material';
-import { useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
 
 const theme = createTheme();
 
 function App() {
-  const [state, setState] = useState(0);
   return (
     <ThemeProvider theme={theme}>
-      <Typography variant="h1">Hello Avito</Typography>
-      <Button onClick={() => setState('lala')}>Increment {state}</Button>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }
