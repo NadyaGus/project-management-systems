@@ -1,6 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ROUTES } from './constants';
+import { TasksPage } from './pages/TasksPage';
+import { getAllTasks } from './services/tasks';
+
+const tasksLoader = async () => {
+  return await getAllTasks();
+};
 
 export const router = createBrowserRouter([
   {
@@ -21,7 +27,8 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.issues.href,
-        element: <div>Tasks</div>,
+        loader: tasksLoader,
+        element: <TasksPage />,
       },
     ],
   },

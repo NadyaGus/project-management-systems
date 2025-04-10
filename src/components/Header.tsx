@@ -13,11 +13,11 @@ import { ROUTES } from '../constants';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { blue } from '@mui/material/colors';
+import { CreateTaskButton } from './CreateTaskButton';
 
 const drawerWidth = 240;
 
-const Header = () => {
+export const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
@@ -27,11 +27,6 @@ const Header = () => {
   useEffect(() => {
     setAlignment(location.pathname);
   }, [location]);
-
-  const handleCreateTaskButton = () => {
-    console.log('Create task button clicked');
-    // TODO сделать создание задачи
-  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -80,13 +75,7 @@ const Header = () => {
               </Link>
             ))}
           </Box>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: '#fff', color: blue[600] }}
-            onClick={handleCreateTaskButton}
-          >
-            Создать задачу
-          </Button>
+          <CreateTaskButton />
         </Toolbar>
       </AppBar>
       <nav>
@@ -111,5 +100,3 @@ const Header = () => {
     </Box>
   );
 };
-
-export { Header };

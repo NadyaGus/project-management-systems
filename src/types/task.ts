@@ -6,7 +6,7 @@ export type Assigner = {
 };
 
 export type TaskPriority = 'Low' | 'Medium' | 'High';
-export type TaskStatus = 'To Do' | 'In Progress' | 'Done';
+export type TaskStatus = 'Backlog' | 'InProgress' | 'Done';
 
 export type Task = {
   boardId?: number;
