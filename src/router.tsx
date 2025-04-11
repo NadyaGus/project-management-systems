@@ -3,9 +3,11 @@ import { Layout } from './components/Layout';
 import { ROUTES } from './constants';
 import { TasksPage } from './pages/TasksPage';
 import { getAllTasks } from './services/tasks';
+import { globalStore } from './store/GlobalStore';
 
 const tasksLoader = async () => {
-  return await getAllTasks();
+  const data = await getAllTasks();
+  globalStore.setTasks(data?.data || []);
 };
 
 export const router = createBrowserRouter([

@@ -1,9 +1,9 @@
 import { Button } from '@mui/material';
+import { taskDrawerStore } from '../store/TaskDrawerStore';
 
 export const CreateTaskButton = () => {
   const handleCreateTaskButton = () => {
-    console.log('Create task button clicked');
-    // TODO сделать создание задачи
+    taskDrawerStore.toggleOpen();
   };
 
   return (

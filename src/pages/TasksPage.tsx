@@ -1,19 +1,20 @@
-import { useLoaderData } from 'react-router-dom';
-import { Task } from '../types/task';
 import { SearchAndFilters } from '../components/SearchAndFilters';
 import { CreateTaskButton } from '../components/CreateTaskButton';
 import { TaskTable } from '../components/TaskTable';
+import { globalStore } from '../store/GlobalStore';
+import { observer } from 'mobx-react-lite';
 
-export const TasksPage = () => {
-  const loaderData = useLoaderData<{ data: Task[] }>();
+export const TasksPage = observer(() => {
+  const tasksData = globalStore.tasks;
+  // TODO add fallback ui
 
   return (
     <>
       <SearchAndFilters />
 
-      <TaskTable data={loaderData.data} />
+      <TaskTable data={tasksData} />
 
       <CreateTaskButton />
     </>
   );
-};
+});
