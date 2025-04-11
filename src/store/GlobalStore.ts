@@ -58,6 +58,10 @@ class GlobalStore {
       console.error(error);
     }
   }
+
+  getBoardById(id: number) {
+    return this.boards.find((board) => board.id === id);
+  }
 }
 
 export const globalStore = new GlobalStore();

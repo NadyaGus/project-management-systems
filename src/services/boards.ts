@@ -11,7 +11,7 @@ const getAllBoards = async (): Promise<{ data: Board[] } | undefined> => {
   }
 };
 
-const getBoardById = async (
+const getBoardTasks = async (
   id: number
 ): Promise<{ data: Task[] } | undefined> => {
   try {
@@ -22,4 +22,4 @@ const getBoardById = async (
   }
 };
 
-export { getAllBoards, getBoardById };
+export { getAllBoards, getBoardTasks };

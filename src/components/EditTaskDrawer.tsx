@@ -13,7 +13,7 @@ import {
 import { taskDrawerStore } from '../store/TaskDrawerStore';
 import { observer } from 'mobx-react-lite';
 import { globalStore } from '../store/GlobalStore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { validateForm } from '../utils/validateForm';
 
 const drawerWidth = 600;
@@ -26,6 +26,12 @@ export const EditTaskDrawer = observer(() => {
   const [selectedPriority, setSelectedPriority] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedAssigner, setSelectedAssigner] = useState('');
+
+  useEffect(() => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    } // Remove MUI focus error
+  }, [isOpen]);
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     switch (event.target.name) {

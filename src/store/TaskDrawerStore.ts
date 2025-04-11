@@ -1,7 +1,9 @@
 import { makeAutoObservable } from 'mobx';
+import { Task } from '../types/task';
 
 class TaskDrawerStore {
   isOpen: boolean = false;
+  editTask: Task | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -9,6 +11,11 @@ class TaskDrawerStore {
 
   toggleOpen() {
     this.isOpen = !this.isOpen;
+  }
+
+  setEditTask(task: Task) {
+    this.toggleOpen();
+    this.editTask = task;
   }
 }
 

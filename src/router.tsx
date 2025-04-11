@@ -9,8 +9,8 @@ import { TasksPage } from './pages/TasksPage';
 import { getAllTasks } from './services/tasks';
 import { globalStore } from './store/GlobalStore';
 import { BoardsPage } from './pages/BoardsPage';
-import { getAllBoards, getBoardById } from './services/boards';
-import { BoardPage } from './pages/BoardPage';
+import { getAllBoards, getBoardTasks } from './services/boards';
+import { BoardPage } from './pages/BoardPage/BoardPage';
 
 const tasksLoader = async () => {
   if (!globalStore.tasks.length) {
@@ -28,7 +28,7 @@ const boardsLoader = async () => {
 
 const boardByIdLoader = async ({ params }: LoaderFunctionArgs) => {
   const id = params.boardId;
-  return await getBoardById(Number(id));
+  return await getBoardTasks(Number(id));
 };
 
 export const router = createBrowserRouter([
