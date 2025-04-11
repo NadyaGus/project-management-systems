@@ -1,13 +1,34 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  LoaderFunctionArgs,
+  Navigate,
+} from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ROUTES } from './constants';
 import { TasksPage } from './pages/TasksPage';
 import { getAllTasks } from './services/tasks';
 import { globalStore } from './store/GlobalStore';
+import { BoardsPage } from './pages/BoardsPage';
+import { getAllBoards, getBoardById } from './services/boards';
+import { BoardPage } from './pages/BoardPage';
 
 const tasksLoader = async () => {
-  const data = await getAllTasks();
-  globalStore.setTasks(data?.data || []);
+  if (!globalStore.tasks.length) {
+    const data = await getAllTasks();
+    globalStore.setTasks(data?.data || []);
+  }
+};
+
+const boardsLoader = async () => {
+  if (!globalStore.boards.length) {
+    const data = await getAllBoards();
+    globalStore.setBoards(data?.data || []);
+  }
+};
+
+const boardByIdLoader = async ({ params }: LoaderFunctionArgs) => {
+  const id = params.boardId;
+  return await getBoardById(Number(id));
 };
 
 export const router = createBrowserRouter([
@@ -21,11 +42,13 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.boards.href,
-        element: <div>Boards</div>,
+        loader: boardsLoader,
+        element: <BoardsPage />,
       },
       {
         path: ROUTES.board.href,
-        element: <div>Board Details</div>,
+        loader: boardByIdLoader,
+        element: <BoardPage />,
       },
       {
         path: ROUTES.issues.href,
