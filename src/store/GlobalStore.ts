@@ -38,12 +38,16 @@ class GlobalStore {
     this.tasks = tasks;
   }
 
+  getBoardById(id: number) {
+    return this.boards.find((board) => board.id === id);
+  }
+
   async addTask(task: TaskCreate) {
     try {
-      const id: { data: { id: 47 } } = await createTask(task);
+      const newTaskResponse: { data: { id: number } } = await createTask(task);
 
       try {
-        const newTask = await getTaskById(id.data.id);
+        const newTask = await getTaskById(newTaskResponse.data.id);
         if (newTask) {
           runInAction(() => {
             this.tasks = [...this.tasks, newTask.data];
@@ -57,10 +61,6 @@ class GlobalStore {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  getBoardById(id: number) {
-    return this.boards.find((board) => board.id === id);
   }
 }
 

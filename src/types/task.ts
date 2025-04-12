@@ -26,3 +26,11 @@ export type TaskCreate = {
   priority: TaskPriority;
   title: string;
 };
+
+export type TaskUpdate = {
+  assigneeId: number;
+  description: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+  title: string;
+};

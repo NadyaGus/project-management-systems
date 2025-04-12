@@ -1,4 +1,4 @@
-import { Task, TaskCreate, TaskStatus } from '../types/task';
+import { Task, TaskCreate, TaskStatus, TaskUpdate } from '../types/task';
 import api from './api';
 
 const getAllTasks = async (): Promise<{ data: Task[] } | undefined> => {
@@ -28,7 +28,7 @@ const createTask = async (task: TaskCreate) => {
   }
 };
 
-const updateTask = async (taskId: number, task: TaskCreate) => {
+const updateTask = async (taskId: number, task: TaskUpdate) => {
   try {
     const response = await api.put(`tasks/update/${taskId}`, task);
     return response.data;

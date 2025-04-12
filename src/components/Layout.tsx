@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Header } from './Header';
 import { Box } from '@mui/material';
-import { EditTaskDrawer } from './EditTaskDrawer';
+import { EditTaskDrawer } from './EditTaskDrawer/EditTaskDrawer';
 
 export const Layout = () => {
   return (

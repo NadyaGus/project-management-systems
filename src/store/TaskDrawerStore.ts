@@ -1,9 +1,11 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { Task } from '../types/task';
+import { Board } from '../types/board';
 
 class TaskDrawerStore {
   isOpen: boolean = false;
   editedTask: Task | null = null;
+  boardTask: Board | null = null;
   callFromHeader: boolean = false;
   callFromBoard: boolean = false;
   callFromTasks: boolean = false;
@@ -16,10 +18,15 @@ class TaskDrawerStore {
     this.isOpen = !this.isOpen;
 
     if (!this.isOpen) {
-      this.editedTask = null;
-      this.callFromHeader = false;
-      this.callFromBoard = false;
-      this.callFromTasks = false;
+      setTimeout(() => {
+        runInAction(() => {
+          this.editedTask = null;
+          this.boardTask = null;
+          this.callFromHeader = false;
+          this.callFromBoard = false;
+          this.callFromTasks = false;
+        });
+      }, 400);
     }
   }
 
@@ -28,9 +35,10 @@ class TaskDrawerStore {
     this.toggleOpen();
   }
 
-  openFromBoard(task: Task) {
+  openFromBoard(task: Task, board: Board) {
     this.editedTask = task;
     this.callFromBoard = true;
+    this.boardTask = board;
     this.toggleOpen();
   }
 
