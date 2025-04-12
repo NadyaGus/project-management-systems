@@ -3,6 +3,7 @@ import { TaskUpdate } from '../types/task';
 
 const taskEditSchema = z.object({
   assigneeId: z.number(),
+  boardId: z.string(),
   description: z.string(),
   priority: z.enum(['Low', 'Medium', 'High']),
   status: z.enum(['Backlog', 'InProgress', 'Done']),
@@ -27,8 +28,9 @@ export const validateEditTaskForm = (data: unknown) => {
     const isValid = checkFormType(data);
 
     if (isValid.success) {
-      const validFormData: TaskUpdate = {
+      const validFormData = {
         assigneeId: Number(isValid.data.assigneeId),
+        boardId: isValid.data.boardId,
         description: isValid.data.description,
         priority: isValid.data.priority as TaskUpdate['priority'],
         status: isValid.data.status as TaskUpdate['status'],
@@ -36,6 +38,7 @@ export const validateEditTaskForm = (data: unknown) => {
       };
 
       const isValidData = taskEditSchema.safeParse(validFormData);
+
       if (isValidData.success) {
         return { success: true, data: isValidData.data };
       } else {

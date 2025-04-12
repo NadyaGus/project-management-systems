@@ -56,7 +56,11 @@ export const TaskForm = observer(() => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (isOpenFromTasks || isOpenFromBoard) {
       e.preventDefault();
-      handleSubmitEditTask(e, taskDrawerStore.editedTask?.id);
+      const values = Object.fromEntries(new FormData(e.currentTarget));
+      if (taskDrawerStore.callFromBoard) {
+        values['boardId'] = String(taskDrawerStore.boardTask?.id);
+      }
+      handleSubmitEditTask(e, values, taskDrawerStore.editedTask?.id as number);
     } else {
       handleSubmitNewTask(e);
     }

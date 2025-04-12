@@ -2,11 +2,26 @@ import { Box } from '@mui/material';
 import { BoardColumn } from './BoardColumn';
 import { blue } from '@mui/material/colors';
 import { Task } from '../../../types/task';
+import { observer } from 'mobx-react-lite';
+import { boardStore } from '../../../store/BoardStore';
+import { useEffect, useState } from 'react';
 
-export const BoardTable = ({ data }: { data: Task[] }) => {
-  const toDoTasks = data.filter((task) => task.status === 'Backlog');
-  const inProgressTasks = data.filter((task) => task.status === 'InProgress');
-  const doneTasks = data.filter((task) => task.status === 'Done');
+export const BoardTable = observer(() => {
+  const data = boardStore.boardTasks;
+
+  const [toDoTasks, setToDoTasks] = useState<Task[]>([]);
+  const [inProgressTasks, setInProgressTasks] = useState<Task[]>([]);
+  const [doneTasks, setDoneTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    const toDo = data.filter((task) => task.status === 'Backlog');
+    const inProgress = data.filter((task) => task.status === 'InProgress');
+    const done = data.filter((task) => task.status === 'Done');
+
+    setToDoTasks(toDo);
+    setInProgressTasks(inProgress);
+    setDoneTasks(done);
+  }, [data]);
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -40,4 +55,4 @@ export const BoardTable = ({ data }: { data: Task[] }) => {
       />
     </Box>
   );
-};
+});

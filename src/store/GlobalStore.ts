@@ -9,6 +9,7 @@ import {
   getTaskById,
   updateTask,
 } from '../services/tasks';
+import { boardStore } from './BoardStore';
 
 class GlobalStore {
   assigners: Assigner[] = [];
@@ -68,34 +69,22 @@ class GlobalStore {
     }
   }
 
-  async updateTask(task: TaskUpdate, id?: number) {
+  async updateTask(task: TaskUpdate, id: number) {
     try {
-      if (!id) {
-        console.error('No task id for update');
-      } else {
-        await updateTask(id, task);
-        const updatedTask = await getTaskById(id).then((res) => res?.data);
+      await updateTask(id, task);
+      const updatedTask = await getTaskById(id).then((res) => res?.data);
 
-        if (!updatedTask) {
-          console.error('Failed to update task in state');
-        }
+      if (!updatedTask) {
+        console.error('Failed to update task in state');
+      }
 
-        if (updatedTask && !updatedTask.boardId) {
-          const boardId = this.tasks.find((t) => t.id === id)?.boardId;
-          if (boardId) {
-            updatedTask.boardId = boardId;
-          } else {
-            console.error('Failed to update task in state');
-          }
-        }
-
-        if (updatedTask) {
-          runInAction(() => {
-            this.tasks = this.tasks.map((task) =>
-              task.id === id ? updatedTask : task
-            );
-          });
-        }
+      if (updatedTask) {
+        runInAction(() => {
+          this.tasks = this.tasks.map((task) =>
+            task.id === id ? updatedTask : task
+          );
+          boardStore.updateTask(updatedTask);
+        });
       }
     } catch (error) {
       console.error(error);

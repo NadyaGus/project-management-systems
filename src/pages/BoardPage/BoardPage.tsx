@@ -1,14 +1,11 @@
-import { Link, useLoaderData, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { ROUTES } from '../../constants';
 import { observer } from 'mobx-react-lite';
-import { Task } from '../../types/task';
 import { globalStore } from '../../store/GlobalStore';
 import { BoardTable } from './components/BoardTable';
 
 export const BoardPage = observer(() => {
-  const loaderData = useLoaderData<{ data: Task[] }>();
-
   const params = useParams();
   const boardData = globalStore.getBoardById(
     params.boardId ? Number(params.boardId) : 0
@@ -37,7 +34,7 @@ export const BoardPage = observer(() => {
         </Typography>
 
         <Paper sx={{ width: '100%', p: 2 }}>
-          <BoardTable data={loaderData.data} />
+          <BoardTable />
         </Paper>
       </Box>
     </>

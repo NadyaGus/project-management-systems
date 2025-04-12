@@ -20,17 +20,20 @@ export const handleSubmitNewTask = (e: React.FormEvent<HTMLFormElement>) => {
 
 export const handleSubmitEditTask = (
   e: React.FormEvent<HTMLFormElement>,
-  taskId?: number
+  values: {
+    [k: string]: FormDataEntryValue;
+  },
+  taskId: number
 ) => {
   e.preventDefault();
   // TODO: add validation error
-  const values = Object.fromEntries(new FormData(e.currentTarget));
 
   const isValid = validateEditTaskForm(values);
 
   if (isValid) {
     if (isValid.success && isValid.data) {
-      globalStore.updateTask(isValid.data, taskId);
+      const newTask = isValid.data;
+      globalStore.updateTask(newTask, taskId);
       taskDrawerStore.toggleOpen();
     }
   }

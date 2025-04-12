@@ -11,6 +11,7 @@ import { globalStore } from './store/GlobalStore';
 import { BoardsPage } from './pages/BoardsPage';
 import { getAllBoards, getBoardTasks } from './services/boards';
 import { BoardPage } from './pages/BoardPage/BoardPage';
+import { boardStore } from './store/BoardStore';
 
 const tasksLoader = async () => {
   if (!globalStore.tasks.length) {
@@ -28,7 +29,9 @@ const boardsLoader = async () => {
 
 const boardByIdLoader = async ({ params }: LoaderFunctionArgs) => {
   const id = params.boardId;
-  return await getBoardTasks(Number(id));
+  const tasks = await getBoardTasks(Number(id));
+
+  boardStore.setBoardTasks(tasks?.data || []);
 };
 
 export const router = createBrowserRouter([
