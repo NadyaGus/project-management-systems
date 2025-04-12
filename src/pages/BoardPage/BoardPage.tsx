@@ -28,16 +28,15 @@ export const BoardPage = observer(() => {
       <Box
         sx={{
           width: '100%',
-          display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <Paper sx={{ width: '100%', p: 2 }}>
-          <Typography variant="h2" sx={{ fontWeight: 400, fontSize: 20 }}>
-            {boardData?.name}
-          </Typography>
+        <Typography variant="h2" sx={{ fontWeight: 400, fontSize: 20 }}>
+          {boardData?.name}
+        </Typography>
 
+        <Paper sx={{ width: '100%', p: 2 }}>
           <BoardTable data={loaderData.data} />
         </Paper>
       </Box>

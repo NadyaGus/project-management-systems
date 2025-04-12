@@ -3,6 +3,7 @@ import { CreateTaskButton } from '../components/CreateTaskButton';
 import { TaskTable } from '../components/TaskTable';
 import { globalStore } from '../store/GlobalStore';
 import { observer } from 'mobx-react-lite';
+import { taskDrawerStore } from '../store/TaskDrawerStore';
 
 export const TasksPage = observer(() => {
   const tasksData = globalStore.tasks;
@@ -14,7 +15,7 @@ export const TasksPage = observer(() => {
 
       <TaskTable data={tasksData} />
 
-      <CreateTaskButton />
+      <CreateTaskButton onClick={() => taskDrawerStore.openFromHeader()} />
     </>
   );
 });

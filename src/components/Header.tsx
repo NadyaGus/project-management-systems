@@ -14,10 +14,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CreateTaskButton } from './CreateTaskButton';
+import { observer } from 'mobx-react-lite';
+import { taskDrawerStore } from '../store/TaskDrawerStore';
 
 const drawerWidth = 240;
 
-export const Header = () => {
+export const Header = observer(() => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
@@ -75,7 +77,7 @@ export const Header = () => {
               </Link>
             ))}
           </Box>
-          <CreateTaskButton />
+          <CreateTaskButton onClick={() => taskDrawerStore.openFromHeader()} />
         </Toolbar>
       </AppBar>
       <nav>
@@ -99,4 +101,4 @@ export const Header = () => {
       </nav>
     </Box>
   );
-};
+});

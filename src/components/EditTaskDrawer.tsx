@@ -15,6 +15,8 @@ import { observer } from 'mobx-react-lite';
 import { globalStore } from '../store/GlobalStore';
 import { useEffect, useState } from 'react';
 import { validateForm } from '../utils/validateForm';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../constants';
 
 const drawerWidth = 600;
 
@@ -186,6 +188,20 @@ export const EditTaskDrawer = observer(() => {
               ))}
             </Select>
           </FormControl>
+
+          {taskDrawerStore.callFromTasks && (
+            <Link
+              to={`${ROUTES.boards.href}/${taskDrawerStore.editedTask?.boardId}`}
+            >
+              <Button
+                variant="contained"
+                type="submit"
+                onClick={() => taskDrawerStore.toggleOpen()}
+              >
+                Перейти на доску
+              </Button>
+            </Link>
+          )}
 
           <Button variant="contained" type="submit">
             Создать задачу

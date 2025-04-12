@@ -29,7 +29,7 @@ export const BoardColumn = observer(
         {tasks.map((task) => (
           <Paper
             key={task.id}
-            onClick={() => taskDrawerStore.setEditTask(task)}
+            onClick={() => taskDrawerStore.openFromBoard(task)}
             sx={{
               display: 'flex',
               justifyContent: 'space-between',

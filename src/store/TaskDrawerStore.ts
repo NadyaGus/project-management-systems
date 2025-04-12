@@ -3,7 +3,10 @@ import { Task } from '../types/task';
 
 class TaskDrawerStore {
   isOpen: boolean = false;
-  editTask: Task | null = null;
+  editedTask: Task | null = null;
+  callFromHeader: boolean = false;
+  callFromBoard: boolean = false;
+  callFromTasks: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -11,11 +14,30 @@ class TaskDrawerStore {
 
   toggleOpen() {
     this.isOpen = !this.isOpen;
+
+    if (!this.isOpen) {
+      this.editedTask = null;
+      this.callFromHeader = false;
+      this.callFromBoard = false;
+      this.callFromTasks = false;
+    }
   }
 
-  setEditTask(task: Task) {
+  openFromHeader() {
+    this.callFromHeader = true;
     this.toggleOpen();
-    this.editTask = task;
+  }
+
+  openFromBoard(task: Task) {
+    this.editedTask = task;
+    this.callFromBoard = true;
+    this.toggleOpen();
+  }
+
+  openFromTasks(task: Task) {
+    this.editedTask = task;
+    this.callFromTasks = true;
+    this.toggleOpen();
   }
 }
 

@@ -1,9 +1,8 @@
 import { Button } from '@mui/material';
-import { taskDrawerStore } from '../store/TaskDrawerStore';
 
-export const CreateTaskButton = () => {
+export const CreateTaskButton = ({ onClick }: { onClick: () => void }) => {
   const handleCreateTaskButton = () => {
-    taskDrawerStore.toggleOpen();
+    onClick();
   };
 
   return (
