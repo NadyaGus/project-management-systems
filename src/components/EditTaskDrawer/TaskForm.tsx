@@ -9,7 +9,10 @@ import {
   TextField,
 } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { handleSubmitDrawer } from './handleSubmitDrawer';
+import {
+  handleSubmitEditTask,
+  handleSubmitNewTask,
+} from './handleSubmitsDrawer';
 import { taskDrawerStore } from '../../store/TaskDrawerStore';
 import { useEffect, useState } from 'react';
 import { globalStore } from '../../store/GlobalStore';
@@ -51,7 +54,12 @@ export const TaskForm = observer(() => {
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    handleSubmitDrawer(e);
+    if (isOpenFromTasks || isOpenFromBoard) {
+      e.preventDefault();
+      handleSubmitEditTask(e, taskDrawerStore.editedTask?.id);
+    } else {
+      handleSubmitNewTask(e);
+    }
   };
 
   const isOpenFromTasks = taskDrawerStore.callFromTasks;

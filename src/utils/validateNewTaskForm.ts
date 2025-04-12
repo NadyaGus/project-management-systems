@@ -17,11 +17,11 @@ const taskCreateFormSchema = z.object({
   title: z.string(),
 });
 
-export const checkFormType = (data: unknown) => {
+const checkFormType = (data: unknown) => {
   return taskCreateFormSchema.safeParse(data);
 };
 
-export const validateForm = (data: unknown) => {
+export const validateNewTaskForm = (data: unknown) => {
   try {
     const isValid = checkFormType(data);
 

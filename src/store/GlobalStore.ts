@@ -1,9 +1,14 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { Assigner, Task, TaskCreate } from '../types/task';
+import { Assigner, Task, TaskCreate, TaskUpdate } from '../types/task';
 import { getAssigners } from '../services/users';
 import { getAllBoards } from '../services/boards';
 import { Board } from '../types/board';
-import { createTask, getAllTasks, getTaskById } from '../services/tasks';
+import {
+  createTask,
+  getAllTasks,
+  getTaskById,
+  updateTask,
+} from '../services/tasks';
 
 class GlobalStore {
   assigners: Assigner[] = [];
@@ -57,6 +62,40 @@ class GlobalStore {
         }
       } catch {
         console.error('Failed to add new task in state');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async updateTask(task: TaskUpdate, id?: number) {
+    try {
+      if (!id) {
+        console.error('No task id for update');
+      } else {
+        await updateTask(id, task);
+        const updatedTask = await getTaskById(id).then((res) => res?.data);
+
+        if (!updatedTask) {
+          console.error('Failed to update task in state');
+        }
+
+        if (updatedTask && !updatedTask.boardId) {
+          const boardId = this.tasks.find((t) => t.id === id)?.boardId;
+          if (boardId) {
+            updatedTask.boardId = boardId;
+          } else {
+            console.error('Failed to update task in state');
+          }
+        }
+
+        if (updatedTask) {
+          runInAction(() => {
+            this.tasks = this.tasks.map((task) =>
+              task.id === id ? updatedTask : task
+            );
+          });
+        }
       }
     } catch (error) {
       console.error(error);
