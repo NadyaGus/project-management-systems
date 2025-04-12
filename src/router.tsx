@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ROUTES } from './constants';
-import { TasksPage } from './pages/TasksPage';
+import { TasksPage } from './pages/TasksPage/TasksPage';
 import { getAllTasks } from './services/tasks';
 import { globalStore } from './store/GlobalStore';
 import { BoardsPage } from './pages/BoardsPage';

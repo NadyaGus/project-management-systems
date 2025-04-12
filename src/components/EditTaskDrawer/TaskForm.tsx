@@ -68,6 +68,7 @@ export const TaskForm = observer(() => {
 
   const isOpenFromTasks = taskDrawerStore.callFromTasks;
   const isOpenFromBoard = taskDrawerStore.callFromBoard;
+  const isNewTask = taskDrawerStore.callFromHeader;
 
   const taskTitle = isOpenFromTasks
     ? taskDrawerStore.editedTask?.title
@@ -104,13 +105,20 @@ export const TaskForm = observer(() => {
   useEffect(() => {
     setSelectedBoard(taskBoardId);
     setSelectedPriority(taskPriority);
-    setSelectedStatus(taskStatus);
+    setSelectedStatus(isNewTask ? 'Backlog' : taskStatus);
 
     const taskAssignerId = assigners.find(
       (assigner) => assigner.fullName === taskAssigner?.fullName
     )?.id;
     setSelectedAssigner(String(taskAssignerId || ''));
-  }, [taskBoardId, taskPriority, taskStatus, taskAssigner, assigners]);
+  }, [
+    taskBoardId,
+    taskPriority,
+    taskStatus,
+    taskAssigner,
+    assigners,
+    isNewTask,
+  ]);
 
   const buttonText =
     isOpenFromTasks || isOpenFromBoard ? 'Сохранить задачу' : 'Создать задачу';
@@ -181,6 +189,7 @@ export const TaskForm = observer(() => {
       <FormControl fullWidth size="small">
         <InputLabel id="status-label">Статус</InputLabel>
         <Select
+          disabled={isNewTask}
           labelId="status-label"
           id="status"
           name="status"

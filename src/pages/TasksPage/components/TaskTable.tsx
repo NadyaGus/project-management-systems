@@ -1,8 +1,8 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import { Task } from '../types/task';
+import { Task } from '../../../types/task';
 import { observer } from 'mobx-react-lite';
-import { taskDrawerStore } from '../store/TaskDrawerStore';
+import { taskDrawerStore } from '../../../store/TaskDrawerStore';
 
 const paginationModel = { page: 0, pageSize: 10 };
 
