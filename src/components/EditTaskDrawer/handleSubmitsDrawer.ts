@@ -5,7 +5,7 @@ import { validateNewTaskForm } from '../../utils/validateNewTaskForm';
 
 export const handleSubmitNewTask = (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
-  // TODO: add validation error
+
   const values = Object.fromEntries(new FormData(e.currentTarget));
 
   const isValid = validateNewTaskForm(values);
@@ -15,6 +15,10 @@ export const handleSubmitNewTask = (e: React.FormEvent<HTMLFormElement>) => {
       globalStore.addTask(isValid.data);
       taskDrawerStore.toggleOpen();
     }
+  }
+
+  if (isValid?.error) {
+    return { success: false, error: isValid.error };
   }
 };
 
@@ -26,7 +30,6 @@ export const handleSubmitEditTask = (
   taskId: number
 ) => {
   e.preventDefault();
-  // TODO: add validation error
 
   const isValid = validateEditTaskForm(values);
 
@@ -36,5 +39,9 @@ export const handleSubmitEditTask = (
       globalStore.updateTask(newTask, taskId);
       taskDrawerStore.toggleOpen();
     }
+  }
+
+  if (isValid?.error) {
+    return { success: false, error: isValid.error };
   }
 };

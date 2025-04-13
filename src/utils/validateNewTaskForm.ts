@@ -10,11 +10,17 @@ const taskCreateSchema = z.object({
 });
 
 const taskCreateFormSchema = z.object({
-  assigneeId: z.string(),
-  boardId: z.string(),
-  description: z.string(),
-  priority: z.enum(['Low', 'Medium', 'High']),
-  title: z.string(),
+  assigneeId: z.string().min(1, { message: 'Выберите исполнителя' }),
+  boardId: z.string().min(1, { message: 'Выберите доску' }),
+  description: z
+    .string({
+      required_error: 'Введите описание задачи',
+    })
+    .min(10, { message: 'Минимум 10 символов' }),
+  priority: z.enum(['Low', 'Medium', 'High'], {
+    required_error: 'Выберите приоритет',
+  }),
+  title: z.string().min(1, { message: 'Введите название задачи' }),
 });
 
 const checkFormType = (data: unknown) => {
@@ -40,6 +46,10 @@ export const validateNewTaskForm = (data: unknown) => {
       } else {
         return { success: false, error: isValidData.error };
       }
+    }
+
+    if (!isValid.success) {
+      return { success: false, error: isValid.error };
     }
   } catch (error) {
     console.error(error);

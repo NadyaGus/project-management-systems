@@ -18,6 +18,15 @@ import { useEffect, useState } from 'react';
 import { globalStore } from '../../store/GlobalStore';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants';
+import { ZodError } from 'zod';
+
+type ZodErrorType = ZodError<{
+  title: string;
+  boardId: number;
+  priority: 'Low' | 'Medium' | 'High';
+  assigneeId: number;
+  description: string;
+}>;
 
 export const TaskForm = observer(() => {
   const isOpen = taskDrawerStore.isOpen;
@@ -33,6 +42,8 @@ export const TaskForm = observer(() => {
   const [selectedPriority, setSelectedPriority] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedAssigner, setSelectedAssigner] = useState('');
+
+  const [errors, setErrors] = useState<ZodErrorType>();
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     switch (event.target.name) {
@@ -60,9 +71,20 @@ export const TaskForm = observer(() => {
       if (taskDrawerStore.callFromBoard) {
         values['boardId'] = String(taskDrawerStore.boardTask?.id);
       }
-      handleSubmitEditTask(e, values, taskDrawerStore.editedTask?.id as number);
+      const result = handleSubmitEditTask(
+        e,
+        values,
+        taskDrawerStore.editedTask?.id as number
+      );
+
+      if (result) {
+        setErrors(result.error);
+      }
     } else {
-      handleSubmitNewTask(e);
+      const result = handleSubmitNewTask(e);
+      if (result) {
+        setErrors(result.error);
+      }
     }
   };
 
@@ -137,6 +159,8 @@ export const TaskForm = observer(() => {
         fullWidth
         size="small"
         defaultValue={taskTitle}
+        error={errors?.formErrors?.fieldErrors.title !== undefined}
+        helperText={errors?.formErrors?.fieldErrors.title}
       />
 
       <TextField
@@ -149,6 +173,8 @@ export const TaskForm = observer(() => {
         fullWidth
         size="small"
         defaultValue={taskDescription}
+        error={errors?.formErrors?.fieldErrors.description !== undefined}
+        helperText={errors?.formErrors?.fieldErrors.description}
       />
 
       <FormControl fullWidth size="small">
@@ -161,6 +187,7 @@ export const TaskForm = observer(() => {
           label="Доска"
           value={selectedBoard}
           onChange={(e) => handleSelectChange(e)}
+          error={errors?.formErrors?.fieldErrors.boardId !== undefined}
         >
           {boards.map((board) => (
             <MenuItem key={board.id} value={board.id}>
@@ -179,6 +206,7 @@ export const TaskForm = observer(() => {
           label="Приоритет"
           value={selectedPriority}
           onChange={(e) => handleSelectChange(e)}
+          error={errors?.formErrors?.fieldErrors.priority !== undefined}
         >
           <MenuItem value={'Low'}>Низкий</MenuItem>
           <MenuItem value={'Medium'}>Средний</MenuItem>
@@ -196,6 +224,7 @@ export const TaskForm = observer(() => {
           label="Статус"
           value={selectedStatus}
           onChange={(e) => handleSelectChange(e)}
+          // error={errors?.formErrors?.fieldErrors.status !== undefined}
         >
           <MenuItem value={'Backlog'}>Backlog</MenuItem>
           <MenuItem value={'InProgress'}>In Progress</MenuItem>
@@ -212,6 +241,7 @@ export const TaskForm = observer(() => {
           label="Исполнитель"
           value={selectedAssigner}
           onChange={(e) => handleSelectChange(e)}
+          error={errors?.formErrors?.fieldErrors.assigneeId !== undefined}
         >
           {assigners.map((assigner) => (
             <MenuItem key={assigner.id} value={assigner.id}>

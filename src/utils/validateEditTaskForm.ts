@@ -13,10 +13,10 @@ const taskEditSchema = z.object({
 const taskEditFormSchema = z.object({
   assigneeId: z.string(),
   boardId: z.string(),
-  description: z.string(),
+  description: z.string().min(10, { message: 'Минимум 10 символов' }),
   priority: z.enum(['Low', 'Medium', 'High']),
   status: z.enum(['Backlog', 'InProgress', 'Done']),
-  title: z.string(),
+  title: z.string().min(1, { message: 'Введите название задачи' }),
 });
 
 const checkFormType = (data: unknown) => {
@@ -44,6 +44,10 @@ export const validateEditTaskForm = (data: unknown) => {
       } else {
         return { success: false, error: isValidData.error };
       }
+    }
+
+    if (!isValid.success) {
+      return { success: false, error: isValid.error };
     }
   } catch (error) {
     console.error(error);
