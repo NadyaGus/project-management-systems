@@ -37,7 +37,7 @@ export const Search = ({
         name="search"
         value={search}
         onChange={(e) => handleChangeInput(e)}
-        placeholder="Поиск"
+        placeholder="Найти задачу..."
         size="small"
         sx={{ flexGrow: 1, mr: 2 }}
       />

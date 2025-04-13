@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Board } from '../../../types/board';
 import { TaskStatus } from '../../../types/task';
+import { handleStatusName } from '../../../utils/handleStatusName';
 
 export const Filters = ({
   boards,
@@ -49,48 +50,56 @@ export const Filters = ({
   };
 
   return (
-    <>
-      <Box>
-        <FormGroup>
-          <FormControl fullWidth size="small">
-            <InputLabel id="status-filter-label">Статус</InputLabel>
-            <Select
-              labelId="status-filter-label"
-              id="status-filter"
-              name="status-filter"
-              label="Статус"
-              value={selectedStatus}
-              onChange={(e) => handleSelectStatusChange(e)}
-            >
-              {selectOptions.map((select) => (
-                <MenuItem key={select.value} value={select.value}>
-                  {select.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </FormGroup>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 2,
+      }}
+    >
+      <FormGroup>
+        <FormControl fullWidth size="small" sx={{ minWidth: 160 }}>
+          <InputLabel id="status-filter-label">Статус</InputLabel>
+          <Select
+            labelId="status-filter-label"
+            id="status-filter"
+            name="status-filter"
+            label="Статус"
+            value={selectedStatus}
+            onChange={(e) => handleSelectStatusChange(e)}
+          >
+            {selectOptions.map((select) => (
+              <MenuItem key={select.value} value={select.value}>
+                {handleStatusName(select.value)}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </FormGroup>
 
-        <FormGroup>
-          <FormControl fullWidth size="small">
-            <InputLabel id="board-filter-label">Доска</InputLabel>
-            <Select
-              labelId="board-filter-label"
-              id="board-filter"
-              name="board-filter"
-              label="Доска"
-              value={selectedBoard}
-              onChange={(e) => handleSelectBoardChange(e)}
-            >
-              {boards.map((board) => (
-                <MenuItem key={board.id} value={board.name}>
-                  {board.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </FormGroup>
-      </Box>
-    </>
+      <FormGroup>
+        <FormControl
+          fullWidth
+          size="small"
+          sx={{ minWidth: { xs: 160, md: 400 } }}
+        >
+          <InputLabel id="board-filter-label">Доска</InputLabel>
+          <Select
+            labelId="board-filter-label"
+            id="board-filter"
+            name="board-filter"
+            label="Доска"
+            value={selectedBoard}
+            onChange={(e) => handleSelectBoardChange(e)}
+          >
+            {boards.map((board) => (
+              <MenuItem key={board.id} value={board.name}>
+                {board.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </FormGroup>
+    </Box>
   );
 };

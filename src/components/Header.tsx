@@ -40,7 +40,9 @@ export const Header = observer(() => {
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item.name.toUpperCase()} />
+              <Link to={item.href}>
+                <ListItemText primary={item.name.toUpperCase()} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -48,10 +50,18 @@ export const Header = observer(() => {
     </Box>
   );
 
+  const handleOpacityStyle = (item: { href: string; name: string }) => {
+    return alignment !== '/boards' && alignment !== '/issues'
+      ? 1
+      : alignment === item.href
+        ? 1
+        : 0.5;
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{ bgcolor: '#5263c3' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <IconButton
             color="inherit"
@@ -68,7 +78,7 @@ export const Header = observer(() => {
                 <Button
                   sx={{
                     color: '#fff',
-                    opacity: alignment === item.href ? 1 : 0.5,
+                    opacity: handleOpacityStyle(item),
                     '&:hover': { opacity: 0.8 },
                   }}
                 >

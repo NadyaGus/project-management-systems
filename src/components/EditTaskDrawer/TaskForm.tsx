@@ -224,11 +224,10 @@ export const TaskForm = observer(() => {
           label="Статус"
           value={selectedStatus}
           onChange={(e) => handleSelectChange(e)}
-          // error={errors?.formErrors?.fieldErrors.status !== undefined}
         >
-          <MenuItem value={'Backlog'}>Backlog</MenuItem>
-          <MenuItem value={'InProgress'}>In Progress</MenuItem>
-          <MenuItem value={'Done'}>Done</MenuItem>
+          <MenuItem value={'Backlog'}>Новая</MenuItem>
+          <MenuItem value={'InProgress'}>В работе</MenuItem>
+          <MenuItem value={'Done'}>Выполнена</MenuItem>
         </Select>
       </FormControl>
 

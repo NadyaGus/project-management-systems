@@ -1,9 +1,7 @@
 import { Filters } from './components/Filters';
-import { CreateTaskButton } from '../../components/CreateTaskButton';
 import { TaskTable } from './components/TaskTable';
 import { globalStore } from '../../store/GlobalStore';
 import { observer } from 'mobx-react-lite';
-import { taskDrawerStore } from '../../store/TaskDrawerStore';
 import { Search } from './components/Search';
 import { useEffect, useState } from 'react';
 import {
@@ -11,6 +9,7 @@ import {
   filterTasksByStatusAndBoard,
 } from './helpers';
 import { ResetFiltersButton } from './components/ResetFiltersButton';
+import { Box, Typography } from '@mui/material';
 
 export const TasksPage = observer(() => {
   const tasksData = globalStore.tasks;
@@ -50,20 +49,38 @@ export const TasksPage = observer(() => {
 
   return (
     <>
-      <Search searchValue={searchValue} setSearchValue={setSearchValue} />
-      <Filters
-        boards={boardsData}
-        filteredStatusValue={filteredStatusValue}
-        filteredBoardValue={filteredBoardValue}
-        setFilteredBoardValue={setFilteredBoardValue}
-        setFilteredStatusValue={setFilteredStatusValue}
-      />
+      <Typography
+        variant="h1"
+        sx={{ mt: 2, mb: 2, fontWeight: 400, fontSize: 32 }}
+      >
+        Все задачи
+      </Typography>
 
-      <ResetFiltersButton onClick={() => handleResetFilters()} />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: 2,
+          }}
+        >
+          <Filters
+            boards={boardsData}
+            filteredStatusValue={filteredStatusValue}
+            filteredBoardValue={filteredBoardValue}
+            setFilteredBoardValue={setFilteredBoardValue}
+            setFilteredStatusValue={setFilteredStatusValue}
+          />
+
+          {searchValue || filteredStatusValue || filteredBoardValue ? (
+            <ResetFiltersButton onClick={handleResetFilters} />
+          ) : null}
+        </Box>
+      </Box>
 
       <TaskTable data={sortedTasks} />
-
-      <CreateTaskButton onClick={() => taskDrawerStore.openFromHeader()} />
     </>
   );
 });

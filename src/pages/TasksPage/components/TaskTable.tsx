@@ -3,6 +3,7 @@ import Paper from '@mui/material/Paper';
 import { Task } from '../../../types/task';
 import { observer } from 'mobx-react-lite';
 import { taskDrawerStore } from '../../../store/TaskDrawerStore';
+import { handleStatusName } from '../../../utils/handleStatusName';
 
 const paginationModel = { page: 0, pageSize: 10 };
 
@@ -18,7 +19,7 @@ export const TaskTable = observer(({ data }: { data: Task[] }) => {
     id: task.id,
     title: task.title,
     board: task.boardName,
-    status: task.status,
+    status: handleStatusName(task.status),
     assignee: task.assignee.fullName,
   }));
 
@@ -46,6 +47,7 @@ export const TaskTable = observer(({ data }: { data: Task[] }) => {
         disableRowSelectionOnClick
         disableColumnMenu
         disableColumnSelector
+        disableColumnSorting
         sx={{
           border: 0,
           '& .MuiDataGrid-cell:focus': {

@@ -4,7 +4,20 @@ import { router } from './router';
 import { useEffect } from 'react';
 import { globalStore } from './store/GlobalStore';
 
-const theme = createTheme();
+const theme = createTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: '#3f51b5',
+        },
+        secondary: {
+          main: '#f50057',
+        },
+      },
+    },
+  },
+});
 
 function App() {
   useEffect(() => {
