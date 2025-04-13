@@ -26,7 +26,7 @@ export const BoardTable = observer(() => {
     <Box sx={{ overflow: 'scroll' }}>
       <Box sx={{ display: 'flex', margin: '0 auto', width: 'auto' }}>
         <BoardColumn
-          title="TODO"
+          title="НОВЫЕ ЗАДАЧИ"
           tasks={toDoTasks}
           sx={{
             minWidth: 400,
@@ -34,7 +34,7 @@ export const BoardTable = observer(() => {
           }}
         />
         <BoardColumn
-          title="IN PROGRESS"
+          title="В РАБОТЕ"
           tasks={inProgressTasks}
           sx={{
             minWidth: 400,
@@ -44,7 +44,7 @@ export const BoardTable = observer(() => {
           }}
         />
         <BoardColumn
-          title="DONE"
+          title="ГОТОВО"
           tasks={doneTasks}
           sx={{
             minWidth: 400,

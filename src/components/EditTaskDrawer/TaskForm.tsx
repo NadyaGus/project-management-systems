@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   FormControl,
@@ -168,7 +169,7 @@ export const TaskForm = observer(() => {
         id="description"
         name="description"
         multiline
-        rows={4}
+        rows={6}
         placeholder="Введите ваш текст..."
         fullWidth
         size="small"
@@ -244,29 +245,37 @@ export const TaskForm = observer(() => {
         >
           {assigners.map((assigner) => (
             <MenuItem key={assigner.id} value={assigner.id}>
-              {assigner.fullName}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Avatar
+                  alt={assigner.fullName}
+                  src={assigner.avatarUrl}
+                  sx={{ width: 24, height: 24 }}
+                />
+                {assigner.fullName}
+              </Box>
             </MenuItem>
           ))}
         </Select>
       </FormControl>
+
+      <Button variant="contained" type="submit">
+        {buttonText}
+      </Button>
 
       {taskDrawerStore.callFromTasks && (
         <Link
           to={`${ROUTES.boards.href}/${taskDrawerStore.editedTask?.boardId}`}
         >
           <Button
-            variant="contained"
+            variant="outlined"
             type="submit"
             onClick={() => taskDrawerStore.toggleOpen()}
+            fullWidth
           >
             Перейти на доску
           </Button>
         </Link>
       )}
-
-      <Button variant="contained" type="submit">
-        {buttonText}
-      </Button>
     </Box>
   );
 });

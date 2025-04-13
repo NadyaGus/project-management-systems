@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { TaskCard } from './TaskCard';
 
 type BoardColumnProps = {
-  title: 'TODO' | 'IN PROGRESS' | 'DONE';
+  title: 'НОВЫЕ ЗАДАЧИ' | 'В РАБОТЕ' | 'ГОТОВО';
   tasks: Task[];
 } & BoxProps;
 

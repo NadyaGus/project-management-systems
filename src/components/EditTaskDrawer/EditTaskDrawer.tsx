@@ -3,9 +3,8 @@ import { taskDrawerStore } from '../../store/TaskDrawerStore';
 import { observer } from 'mobx-react-lite';
 import { TaskForm } from './TaskForm';
 
-const drawerWidth = 600;
-
 export const EditTaskDrawer = observer(() => {
+  const drawerWidth = window.innerWidth > 600 ? 600 : window.innerWidth;
   const isOpen = taskDrawerStore.isOpen;
 
   const isOpenFromTasks = taskDrawerStore.callFromTasks;
