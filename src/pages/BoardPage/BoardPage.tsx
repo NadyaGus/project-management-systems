@@ -12,14 +12,36 @@ export const BoardPage = observer(() => {
   );
 
   if (!boardData) {
-    return <div>Board not found</div>;
-    // TODO: add not found page
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Link to={ROUTES.boards.href}>
+          <Button variant="outlined" sx={{ my: 2 }}>
+            Назад к доскам
+          </Button>
+        </Link>
+
+        <Typography
+          variant="h1"
+          sx={{ mt: 2, mb: 4, fontWeight: 400, fontSize: 32 }}
+        >
+          Доска не найдена
+        </Typography>
+      </Box>
+    );
   }
 
   return (
     <>
       <Link to={ROUTES.boards.href}>
-        <Button>К Доскам </Button>
+        <Button variant="outlined" sx={{ my: 2 }}>
+          Назад к доскам
+        </Button>
       </Link>
 
       <Box
@@ -29,7 +51,10 @@ export const BoardPage = observer(() => {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h2" sx={{ fontWeight: 400, fontSize: 20 }}>
+        <Typography
+          variant="h1"
+          sx={{ mt: 1, mb: 4, fontWeight: 400, fontSize: 32 }}
+        >
           {boardData?.name}
         </Typography>
 

@@ -1,10 +1,10 @@
-import { Box, BoxProps, Divider, Paper, Typography } from '@mui/material';
+import { Box, BoxProps, Divider, Typography } from '@mui/material';
 import { Task } from '../../../types/task';
-import { taskDrawerStore } from '../../../store/TaskDrawerStore';
 import { observer } from 'mobx-react-lite';
 import { globalStore } from '../../../store/GlobalStore';
 import { Board } from '../../../types/board';
 import { useParams } from 'react-router-dom';
+import { TaskCard } from './TaskCard';
 
 type BoardColumnProps = {
   title: 'TODO' | 'IN PROGRESS' | 'DONE';
@@ -34,22 +34,7 @@ export const BoardColumn = observer(
         <Divider />
 
         {tasks.map((task) => (
-          <Paper
-            key={task.id}
-            onClick={() => taskDrawerStore.openFromBoard(task, board)}
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              p: 2,
-              m: 1,
-              '&:hover': { bgcolor: 'action.hover', cursor: 'pointer' },
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 400, fontSize: 16 }}>
-              {task.title}
-            </Typography>
-          </Paper>
+          <TaskCard key={task.id} task={task} board={board} />
         ))}
       </Box>
     );

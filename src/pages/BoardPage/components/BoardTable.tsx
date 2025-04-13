@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import { BoardColumn } from './BoardColumn';
-import { blue } from '@mui/material/colors';
 import { Task } from '../../../types/task';
 import { observer } from 'mobx-react-lite';
 import { boardStore } from '../../../store/BoardStore';
@@ -24,35 +23,35 @@ export const BoardTable = observer(() => {
   }, [data]);
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <BoardColumn
-        title="TODO"
-        tasks={toDoTasks}
-        sx={{
-          flexBasis: '32%',
-
-          outline: `1px solid ${blue[500]}`,
-          borderRadius: 1,
-        }}
-      />
-      <BoardColumn
-        title="IN PROGRESS"
-        tasks={inProgressTasks}
-        sx={{
-          flexBasis: '32%',
-          outline: `1px solid ${blue[500]}`,
-          borderRadius: 1,
-        }}
-      />
-      <BoardColumn
-        title="DONE"
-        tasks={doneTasks}
-        sx={{
-          flexBasis: '32%',
-          outline: `1px solid ${blue[500]}`,
-          borderRadius: 1,
-        }}
-      />
+    <Box sx={{ overflow: 'scroll' }}>
+      <Box sx={{ display: 'flex', margin: '0 auto', width: 'auto' }}>
+        <BoardColumn
+          title="TODO"
+          tasks={toDoTasks}
+          sx={{
+            minWidth: 400,
+            flexGrow: 1,
+          }}
+        />
+        <BoardColumn
+          title="IN PROGRESS"
+          tasks={inProgressTasks}
+          sx={{
+            minWidth: 400,
+            flexGrow: 1,
+            borderLeft: '1px solid #E0E0E0',
+            borderRight: '1px solid #E0E0E0',
+          }}
+        />
+        <BoardColumn
+          title="DONE"
+          tasks={doneTasks}
+          sx={{
+            minWidth: 400,
+            flexGrow: 1,
+          }}
+        />
+      </Box>
     </Box>
   );
 });
