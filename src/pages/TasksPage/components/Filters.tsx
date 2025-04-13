@@ -4,29 +4,21 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
-  Input,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { Board } from '../../../types/board';
 
-export const SearchAndFilters = () => {
+export const Filters = ({ boards }: { boards: Board[] }) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   return (
     <>
-      <Box component={'search'}>
-        <Input
-          type="search"
-          placeholder="Поиск"
-          sx={{ mr: 2 }}
-          inputProps={{ 'aria-label': 'search' }}
-        />
-        <Button
-          variant="outlined"
-          onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-        >
-          {isFiltersOpen ? 'Скрыть фильтры' : 'Показать фильтры'}
-        </Button>
-      </Box>
+      <Button
+        variant="outlined"
+        onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+      >
+        {isFiltersOpen ? 'Скрыть фильтры' : 'Показать фильтры'}
+      </Button>
 
       <Box sx={{ display: isFiltersOpen ? 'flex' : 'none' }}>
         <FormGroup>
@@ -38,7 +30,13 @@ export const SearchAndFilters = () => {
 
         <FormGroup>
           <Typography>По доске:</Typography>
-          <FormControlLabel control={<Checkbox />} label={'1'} />
+          {boards.map((board) => (
+            <FormControlLabel
+              key={board.id}
+              control={<Checkbox />}
+              label={board.name}
+            />
+          ))}
         </FormGroup>
       </Box>
     </>
