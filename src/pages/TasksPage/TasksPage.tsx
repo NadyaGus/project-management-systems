@@ -6,39 +6,62 @@ import { observer } from 'mobx-react-lite';
 import { taskDrawerStore } from '../../store/TaskDrawerStore';
 import { Search } from './components/Search';
 import { useEffect, useState } from 'react';
+import {
+  filterByTitleAndAssignee,
+  filterTasksByStatusAndBoard,
+} from './helpers';
+import { ResetFiltersButton } from './components/ResetFiltersButton';
 
 export const TasksPage = observer(() => {
   const tasksData = globalStore.tasks;
   const boardsData = globalStore.boards;
   // TODO add fallback ui
 
-  const [filteredTasks, setFilteredTasks] = useState(tasksData);
+  const [sortedTasks, setSortedTasks] = useState(tasksData);
   const [searchValue, setSearchValue] = useState('');
+  const [filteredStatusValue, setFilteredStatusValue] = useState('');
+  const [filteredBoardValue, setFilteredBoardValue] = useState('');
+
+  const handleResetFilters = () => {
+    setSearchValue('');
+    setFilteredStatusValue('');
+    setFilteredBoardValue('');
+  };
 
   useEffect(() => {
-    setFilteredTasks(tasksData);
+    setSortedTasks(tasksData);
+    handleResetFilters();
   }, [tasksData]);
 
   useEffect(() => {
-    if (searchValue) {
-      const filteredByTitle = tasksData.filter((task) =>
-        task.title.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      const filteredByName = tasksData.filter((task) =>
-        task.assignee.fullName.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setFilteredTasks(filteredByTitle.concat(filteredByName));
-    } else {
-      setFilteredTasks(tasksData);
+    if (!searchValue && !filteredStatusValue && !filteredBoardValue) {
+      setSortedTasks(tasksData);
+      return;
     }
-  }, [searchValue, tasksData]);
+    const filtered = filterByTitleAndAssignee(tasksData, searchValue);
+
+    const filteredTasks = filterTasksByStatusAndBoard(
+      filtered,
+      filteredStatusValue,
+      filteredBoardValue
+    );
+    setSortedTasks(filteredTasks);
+  }, [searchValue, filteredStatusValue, filteredBoardValue, tasksData]);
 
   return (
     <>
-      <Search setSearchValue={setSearchValue} />
-      <Filters boards={boardsData} />
+      <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+      <Filters
+        boards={boardsData}
+        filteredStatusValue={filteredStatusValue}
+        filteredBoardValue={filteredBoardValue}
+        setFilteredBoardValue={setFilteredBoardValue}
+        setFilteredStatusValue={setFilteredStatusValue}
+      />
 
-      <TaskTable data={filteredTasks} />
+      <ResetFiltersButton onClick={() => handleResetFilters()} />
+
+      <TaskTable data={sortedTasks} />
 
       <CreateTaskButton onClick={() => taskDrawerStore.openFromHeader()} />
     </>

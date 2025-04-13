@@ -1,14 +1,28 @@
 import { Box, Button, TextField } from '@mui/material';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 export const Search = ({
+  searchValue,
   setSearchValue,
 }: {
+  searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [search, setSearch] = useState(searchValue);
+
+  useEffect(() => {
+    setSearch(searchValue);
+  }, [searchValue]);
+
+  const handleChangeInput = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const searchValue = e.currentTarget.search.value;
-    setSearchValue(searchValue);
+    setSearchValue(search);
   };
 
   return (
@@ -21,6 +35,8 @@ export const Search = ({
         id="search"
         type="search"
         name="search"
+        value={search}
+        onChange={(e) => handleChangeInput(e)}
         placeholder="Поиск"
         size="small"
         sx={{ flexGrow: 1, mr: 2 }}

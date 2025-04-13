@@ -1,42 +1,94 @@
 import {
   Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
+  FormControl,
   FormGroup,
-  Typography,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Board } from '../../../types/board';
+import { TaskStatus } from '../../../types/task';
 
-export const Filters = ({ boards }: { boards: Board[] }) => {
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+export const Filters = ({
+  boards,
+  filteredStatusValue,
+  filteredBoardValue,
+  setFilteredStatusValue,
+  setFilteredBoardValue,
+}: {
+  boards: Board[];
+  filteredStatusValue: string;
+  filteredBoardValue: string;
+  setFilteredStatusValue: React.Dispatch<React.SetStateAction<string>>;
+  setFilteredBoardValue: React.Dispatch<React.SetStateAction<string>>;
+}) => {
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedBoard, setSelectedBoard] = useState('');
+
+  useEffect(() => {
+    setSelectedStatus(filteredStatusValue);
+    setSelectedBoard(filteredBoardValue);
+  }, [filteredStatusValue, filteredBoardValue]);
+
+  const selectOptions: { title: string; value: TaskStatus }[] = [
+    { title: 'TODO', value: 'Backlog' },
+    { title: 'IN PROGRESS', value: 'InProgress' },
+    { title: 'DONE', value: 'Done' },
+  ];
+
+  const handleSelectStatusChange = (e: SelectChangeEvent) => {
+    setSelectedStatus(e.target.value);
+    setFilteredStatusValue(e.target.value);
+  };
+
+  const handleSelectBoardChange = (e: SelectChangeEvent) => {
+    setSelectedBoard(e.target.value);
+    setFilteredBoardValue(e.target.value);
+  };
+
   return (
     <>
-      <Button
-        variant="outlined"
-        onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-      >
-        {isFiltersOpen ? 'Скрыть фильтры' : 'Показать фильтры'}
-      </Button>
-
-      <Box sx={{ display: isFiltersOpen ? 'flex' : 'none' }}>
+      <Box>
         <FormGroup>
-          <Typography>По статусу:</Typography>
-          <FormControlLabel control={<Checkbox />} label={'Низкий'} />
-          <FormControlLabel control={<Checkbox />} label={'Средний'} />
-          <FormControlLabel control={<Checkbox />} label={'Высокий'} />
+          <FormControl fullWidth size="small">
+            <InputLabel id="status-filter-label">Статус</InputLabel>
+            <Select
+              labelId="status-filter-label"
+              id="status-filter"
+              name="status-filter"
+              label="Статус"
+              value={selectedStatus}
+              onChange={(e) => handleSelectStatusChange(e)}
+            >
+              {selectOptions.map((select) => (
+                <MenuItem key={select.value} value={select.value}>
+                  {select.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </FormGroup>
 
         <FormGroup>
-          <Typography>По доске:</Typography>
-          {boards.map((board) => (
-            <FormControlLabel
-              key={board.id}
-              control={<Checkbox />}
-              label={board.name}
-            />
-          ))}
+          <FormControl fullWidth size="small">
+            <InputLabel id="board-filter-label">Доска</InputLabel>
+            <Select
+              labelId="board-filter-label"
+              id="board-filter"
+              name="board-filter"
+              label="Доска"
+              value={selectedBoard}
+              onChange={(e) => handleSelectBoardChange(e)}
+            >
+              {boards.map((board) => (
+                <MenuItem key={board.id} value={board.name}>
+                  {board.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </FormGroup>
       </Box>
     </>
